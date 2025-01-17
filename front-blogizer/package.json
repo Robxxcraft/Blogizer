@@ -1,59 +1,34 @@
 {
-  "name": "blogizer",
-  "version": "1.3.3",
+  "name": "front-blogizer",
+  "version": "2.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/postcss7-compat": "^2.2.17",
-    "@tiptap/extension-color": "^2.0.0-beta.9",
-    "@tiptap/extension-image": "^2.0.0-beta.24",
-    "@tiptap/extension-text-align": "^2.0.0-beta.29",
-    "@tiptap/extension-text-style": "^2.0.0-beta.23",
-    "@tiptap/extension-underline": "^2.0.0-beta.22",
-    "@tiptap/starter-kit": "^2.0.0-beta.164",
-    "@tiptap/vue-3": "^2.0.0-beta.85",
-    "autoprefixer": "^9",
-    "axios": "^0.24.0",
+    "@tiptap/extension-color": "^2.6.6",
+    "@tiptap/extension-image": "^2.6.6",
+    "@tiptap/extension-text-align": "^2.6.6",
+    "@tiptap/extension-text-style": "^2.6.6",
+    "@tiptap/extension-underline": "^2.6.6",
+    "@tiptap/starter-kit": "^2.6.6",
+    "@tiptap/vue-3": "^2.6.6",
+    "@vueuse/core": "^11.3.0",
+    "axios": "^1.7.7",
     "chart.js": "^3.7.1",
-    "core-js": "^3.8.3",
-    "postcss": "^7",
     "swiper": "^6.8.4",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
-    "vue": "^3.2.31",
+    "vue": "^3.4.29",
     "vue-chart-3": "^3.1.0",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.16",
-    "@vue/cli-plugin-eslint": "~4.5.16",
-    "@vue/cli-service": "~4.5.16",
-    "@vue/compiler-sfc": "^3.2.31",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-vue": "^7.20.0",
-    "vue-cli-plugin-tailwind": "~2.2.18"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "@vitejs/plugin-vue": "^5.0.5",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.11",
+    "vite": "^5.3.1"
+  }
 }

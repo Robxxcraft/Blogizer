@@ -1,0 +1,174 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.two-lines {
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+
+
+.three-lines {
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+@keyframes slideleft{
+    0% {
+        transform: translateX(-64px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideright{
+    0% {
+        transform: translateX(64px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.slide-left {
+    animation: slideleft 0.3s ease;
+}
+
+.slide-right {
+    animation: slideright 0.3s ease;
+}
+
+@keyframes fade{
+    0% {
+      transform: translateY(-8px);
+      opacity: 0;
+    }
+  
+    100% {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+}
+
+.open {
+    display: block;
+    animation: fade 0.2s ease-out;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.25s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    display: hidden;
+    transform: translateY(-8px);
+    opacity: 0;
+}
+
+.bright {
+    filter: brightness(25%);
+}
+
+.basis-half {
+    flex-basis: 50%;
+}
+
+.h-475 {
+    height: 475px;
+}
+
+.photo {
+    max-width: 100%;
+    height: 200px;
+}
+@media (min-width: 768px) {
+    /* .right-sidebar {
+        width: 100%;
+    } */
+
+   .photo {
+        width: 400px;
+        height: 250px;
+    }
+}
+@media (min-width: 992px) {
+  .right-sidebar {
+    width: 26.65rem;
+   }
+  .photo {
+    width: 500px;
+    height: 350px;
+  }
+}
+@media (min-width: 1200px) {
+    
+  .photo {
+    width: 600px;
+    height: 400px;
+  }
+}
+
+@layer base {
+    ul {
+        @apply list-disc;
+        padding-left: 1.2em;
+    }
+    ol {
+        @apply list-decimal;
+        padding-left: 1.2em;
+    }
+    pre {
+        background-color: #e0e7ff;
+        border-radius: 4px;
+        padding: 0.6em;
+    }
+    code {
+        color: #6366f1;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
+
+    p:empty::after {
+        content: "\00A0";
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    h3 {
+        font-size: 1.17em;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
+
+    h5 {
+        font-size: 0.83em;
+    }
+
+    h6 {
+        font-size: 0.67em;
+    }
+}

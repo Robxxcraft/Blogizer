@@ -1,3 +1,85 @@
+<script setup>
+import Navigation from "../components/navigation.vue";
+import Footers from "../components/footer.vue";
+import { onMounted, ref, watch } from '@vue/runtime-core';
+import api from '../axios';
+import { useRoute, useRouter } from 'vue-router';
+import store from "../store/auth";
+
+const post = ref({})
+const relatedPost = ref([])
+const tags = ref([])
+const comment = ref('')
+const errors = ref({})
+const user = ref({})
+const loading = ref(false)
+const router = useRouter()
+const route = useRoute()
+
+watch(route,()=>{
+    api.get(`/api/posts/${route.params.slug}/details`).then(res => {
+        post.value = res.data.data
+    })
+})
+
+onMounted(() => {
+    api.get(`/api/posts/${route.params.slug}/details`).then(res => {
+        post.value = res.data.data
+    })
+    api.get(`/api/posts/related/${route.params.slug}`).then(res => {
+        relatedPost.value = res.data.data
+    })
+    api.get('/api/home/tags').then(res => {
+        tags.value = res.data.data
+    })
+    user.value = store.state.user ? store.state.user : ''
+})
+const back = ()=>{
+    router.go(-1)
+}
+const like = (id) => {
+    loading.value = true
+    if (!user.value) {
+        return router.push('/login')
+    }
+    if (post.value.liked) {
+        api.post(`/api/posts/${id}/unlike`).then(()=>{
+            post.value.liked = false
+            post.value.likes--
+            loading.value = false
+        }).catch(() => {
+            loading.value = false
+        })
+    } else {
+        api.post(`/api/posts/${id}/like`).then(()=>{
+            post.value.liked = true
+            post.value.likes++
+            loading.value = false
+        }).catch(() => {
+            loading.value = false
+        })
+    }
+}
+const addComment = (id)=>{
+    loading.value = true
+    api.post(`/api/post/${id}/comment`, {body: comment.value}).then(res =>{
+        post.value.comments.push({id: res.data, username: user.value.username, user_id: user.value.id, body: comment.value, created_at: 'Just now'})
+        comment.value = ''
+        loading.value = false
+    }).catch(err => {
+        errors.value = err.response.data.errors
+        loading.value = false
+    })
+}
+
+const deleteComment = (id)=>{
+    api.delete(`/api/post/${id}/comment`).then(() =>{
+        const index = post.value.comments.findIndex(val => val.id === id)
+        post.value.comments.splice(index, 1)
+    })
+}
+</script>
+
 <template>
     <div class="overflow-hidden">
     <Navigation />
@@ -6,11 +88,11 @@
                 <!-- Main content -->
                 <div class="w-full tracking-wide bg-white px-4 md:px-8 py-4 mb-8">
                   <div class="flex items-center justify-between mt-4 mb-6">
-                    <div class="font-bold text-sm bg-green-500 hover:bg-green-600 text-white rounded-sm px-1 shadow-sm hover:shadow-md cursor-pointer" @click="back">
+                    <div class="font-bold text-sm bg-emerald-500 hover:bg-green-600 text-white rounded-sm px-1 shadow-sm hover:shadow-md cursor-pointer" @click="back">
                         <svg class="w-7 h-7 md:w-8 md:h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M11.828 12l2.829 2.828-1.414 1.415L9 12l4.243-4.243 1.414 1.415L11.828 12z"/></svg>
                     </div>
                     <template v-if="post.created_at">
-                        <div class="font-bold text-sm bg-green-500 text-white px-4 py-1 rounded-sm shadow-sm">
+                        <div class="font-bold text-sm bg-emerald-500 text-white px-4 py-1 rounded-sm shadow-sm">
                             {{post.created_at}}
                         </div>
                     </template>
@@ -82,7 +164,7 @@
                         <div class="flex items-center flex-wrap gap-2">
                             <template v-for="(tag, index) in post.tags" :key="index">
                                 <router-link :to="`/tag/${tag.slug}`">
-                                    <div class="px-3 py-1 cursor-pointer text-sm border border-gray-200 rounded-sm transition hover:bg-green-500 hover:text-white">{{tag.name}}</div>
+                                    <div class="px-3 py-1 cursor-pointer text-sm border border-gray-200 rounded-sm transition hover:bg-emerald-500 hover:text-white">{{tag.name}}</div>
                                 </router-link>
                             </template>
                         </div>
@@ -92,10 +174,10 @@
                             <div class="flex items-center">
                                 <button :disabled="loading" @click="like(post.id)" class="focus:outline-none cursor-pointer">
                                     <template v-if="post.liked">
-                                        <svg :class="`${loading ? 'text-gray-300' : 'text-green-500'} w-5 h-5 md:w-6 md:h-6 mr-2`" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M2 9h3v12H2a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1zm5.293-1.293l6.4-6.4a.5.5 0 0 1 .654-.047l.853.64a1.5 1.5 0 0 1 .553 1.57L14.6 8H21a2 2 0 0 1 2 2v2.104a2 2 0 0 1-.15.762l-3.095 7.515a1 1 0 0 1-.925.619H8a1 1 0 0 1-1-1V8.414a1 1 0 0 1 .293-.707z"/></svg>
+                                        <svg :class="`${loading ? 'text-gray-300' : 'text-emerald-500'} w-5 h-5 md:w-6 md:h-6 mr-2`" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M2 9h3v12H2a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1zm5.293-1.293l6.4-6.4a.5.5 0 0 1 .654-.047l.853.64a1.5 1.5 0 0 1 .553 1.57L14.6 8H21a2 2 0 0 1 2 2v2.104a2 2 0 0 1-.15.762l-3.095 7.515a1 1 0 0 1-.925.619H8a1 1 0 0 1-1-1V8.414a1 1 0 0 1 .293-.707z"/></svg>
                                     </template>
                                     <template v-else>
-                                        <svg :class="`${loading ? 'text-gray-300' : 'text-green-500'} w-5 h-5 md:w-6 md:h-6 mr-2`" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M14.6 8H21a2 2 0 0 1 2 2v2.104a2 2 0 0 1-.15.762l-3.095 7.515a1 1 0 0 1-.925.619H2a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1h3.482a1 1 0 0 0 .817-.423L11.752.85a.5.5 0 0 1 .632-.159l1.814.907a2.5 2.5 0 0 1 1.305 2.853L14.6 8zM7 10.588V19h11.16L21 12.104V10h-6.4a2 2 0 0 1-1.938-2.493l.903-3.548a.5.5 0 0 0-.261-.571l-.661-.33-4.71 6.672c-.25.354-.57.644-.933.858zM5 11H3v8h2v-8z"/></svg>
+                                        <svg :class="`${loading ? 'text-gray-300' : 'text-emerald-500'} w-5 h-5 md:w-6 md:h-6 mr-2`" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M14.6 8H21a2 2 0 0 1 2 2v2.104a2 2 0 0 1-.15.762l-3.095 7.515a1 1 0 0 1-.925.619H2a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1h3.482a1 1 0 0 0 .817-.423L11.752.85a.5.5 0 0 1 .632-.159l1.814.907a2.5 2.5 0 0 1 1.305 2.853L14.6 8zM7 10.588V19h11.16L21 12.104V10h-6.4a2 2 0 0 1-1.938-2.493l.903-3.548a.5.5 0 0 0-.261-.571l-.661-.33-4.71 6.672c-.25.354-.57.644-.933.858zM5 11H3v8h2v-8z"/></svg>
                                     </template>
                                 </button>
                                 <div class="font-bold">{{post.likes}}</div>
@@ -151,16 +233,16 @@
                             <div>
                             </div>
                             <div>
-                                <textarea v-model="comment" class="focus:outline-none border-2 focus:border-green-400 rounded text-gray-700 text-sm p-2" placeholder="Add your comment..." cols="25" rows="2"></textarea>
+                                <textarea v-model="comment" class="focus:outline-none border-2 focus:border-emerald-500 rounded text-gray-700 text-sm p-2" placeholder="Add your comment..." cols="25" rows="2"></textarea>
                                 <div v-if="errors.body" class="p-1 text-red-500 hover:text-red-600 text-sm italic">{{errors.body[0]}}</div>
                             </div>
-                            <div class="ml-4 text-green-400 hover:text-green-500 cursor-pointer" @click="addComment(post.id)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M1.923 9.37c-.51-.205-.504-.51.034-.689l19.086-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.475.553-.717.07L11 13 1.923 9.37zm4.89-.2l5.636 2.255 3.04 6.082 3.546-12.41L6.812 9.17z"/></svg></div>
+                            <div class="ml-4 text-emerald-500 hover:text-emerald-500 cursor-pointer" @click="addComment(post.id)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M1.923 9.37c-.51-.205-.504-.51.034-.689l19.086-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.475.553-.717.07L11 13 1.923 9.37zm4.89-.2l5.636 2.255 3.04 6.082 3.546-12.41L6.812 9.17z"/></svg></div>
                             
                         </div>
                         <div v-else>
                             <div class="text-gray-400 font-bold text-sm">Login to add Your comment</div>
                             <div class="inline-block">
-                                <router-link to="/login" class="flex items-center mt-2 bg-green-500 text-white shadow-sm rounded px-2 py-1.5 text-xs hover:shadow-md hover:bg-green-600 transition-color font-bold uppercase">
+                                <router-link to="/login" class="flex items-center mt-2 bg-emerald-500 text-white shadow-sm rounded px-2 py-1.5 text-xs hover:shadow-md hover:bg-green-600 transition-color font-bold uppercase">
                                     <svg class="mr-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
                                     Login
                                 </router-link>
@@ -192,7 +274,7 @@
                                                     {{related.created_at}}
                                                 </div>
                                                 <div
-                                                    class="leading-5 truncate two-lines font-bold text-gray-800 transition-color hover:text-green-500">
+                                                    class="leading-5 truncate two-lines font-bold text-gray-800 transition-color hover:text-emerald-500">
                                                     {{related.title}}
                                                 </div>
                                             </div>
@@ -200,7 +282,7 @@
                                     </router-link>
                                 </div>
 
-                                <div class="cursor-pointer flex items-center text-gray-700 font-bold text-sm uppercase transition hover:text-green-500 pt-1">
+                                <div class="cursor-pointer flex items-center text-gray-700 font-bold text-sm uppercase transition hover:text-emerald-500 pt-1">
                                     <router-link :to="`/categories/${post.category_slug}`">See More...</router-link>
                                 </div>
                             </div>
@@ -227,7 +309,7 @@
                         <div class="text-xl font-bold text-gray-700 mb-3">Tags</div>
                         <template v-if="tags">
                             <div class="flex items-center flex-wrap gap-2">
-                                <div v-for="(tag, index) in tags" :key="index" class="px-3 py-1  text-sm border border-gray-200 rounded-sm transition hover:bg-green-500 hover:text-white">
+                                <div v-for="(tag, index) in tags" :key="index" class="px-3 py-1  text-sm border border-gray-200 rounded-sm transition hover:bg-emerald-500 hover:text-white">
                                     <router-link :to="`/tag/${tag.slug}`">{{tag.name}}</router-link>
                                 </div>
                             </div>
@@ -239,97 +321,6 @@
     <Footers />
     </div>
 </template>
-
-<script>
-import Navigation from "../components/navigation.vue";
-import Footers from "../components/footer.vue";
-import { onMounted, ref, watch } from '@vue/runtime-core';
-import api from '../axios';
-import { useRoute, useRouter } from 'vue-router';
-import store from "../store/auth";
-export default {
-    components: {
-        Navigation,
-        Footers
-    },
-    setup() {
-        const post = ref({})
-        const relatedPost = ref([])
-        const tags = ref([])
-        const comment = ref('')
-        const errors = ref({})
-        const user = ref({})
-        const loading = ref(false)
-        const router = useRouter()
-        const route = useRoute()
-
-        watch(route,()=>{
-            api.get(`/api/posts/${route.params.slug}/details`).then(res => {
-                post.value = res.data.data
-            })
-        })
-
-        onMounted(() => {
-            api.get(`/api/posts/${route.params.slug}/details`).then(res => {
-                post.value = res.data.data
-            })
-            api.get(`/api/posts/related/${route.params.slug}`).then(res => {
-                relatedPost.value = res.data.data
-            })
-            api.get('/api/home/tags').then(res => {
-                tags.value = res.data.data
-            })
-            user.value = store.state.user ? store.state.user : ''
-        })
-        const back = ()=>{
-            router.go(-1)
-        }
-        const like = (id) => {
-            loading.value = true
-            if (!user.value) {
-                return router.push('/login')
-            }
-            if (post.value.liked) {
-                api.post(`/api/posts/${id}/unlike`).then(()=>{
-                    post.value.liked = false
-                    post.value.likes--
-                    loading.value = false
-                }).catch(() => {
-                    loading.value = false
-                })
-            } else {
-                api.post(`/api/posts/${id}/like`).then(()=>{
-                    post.value.liked = true
-                    post.value.likes++
-                    loading.value = false
-                }).catch(() => {
-                    loading.value = false
-                })
-            }
-        }
-        const addComment = (id)=>{
-            loading.value = true
-            api.post(`/api/post/${id}/comment`, {body: comment.value}).then(res =>{
-                post.value.comments.push({id: res.data, username: user.value.username, user_id: user.value.id, body: comment.value, created_at: 'Just now'})
-                comment.value = ''
-                loading.value = false
-            }).catch(err => {
-                errors.value = err.response.data.errors
-                loading.value = false
-            })
-        }
-
-        const deleteComment = (id)=>{
-            api.delete(`/api/post/${id}/comment`).then(() =>{
-                const index = post.value.comments.findIndex(val => val.id === id)
-                post.value.comments.splice(index, 1)
-            })
-        }
-
-        return { post, relatedPost, tags, back, comment, addComment, deleteComment, errors, like, user, loading}
-    },
-}
-</script>
 
 <style>
 @media (min-width: 1200px) {

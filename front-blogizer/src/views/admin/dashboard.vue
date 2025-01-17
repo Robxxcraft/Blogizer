@@ -1,7 +1,7 @@
 <template>
   <header class="flex items-center px-4 justify-between">
-    <div class="py-4 md:px-4 text-lg text-green-500 font-bold">Dashboard</div>
-    <div class="py-4 block md:hidden text-green-500 hover:text-green-600" id="header" @click="side">
+    <div class="py-4 md:px-4 text-lg text-emerald-500 font-bold">Dashboard</div>
+    <div class="py-4 block md:hidden text-emerald-500 hover:text-green-600" id="header" @click="side">
       <svg id="header" style="z-index: 0;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs">
         <rect id="header" x="3" y="3" width="7" height="7"></rect>
         <rect id="header" x="14" y="3" width="7" height="7"></rect>

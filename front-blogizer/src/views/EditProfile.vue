@@ -29,13 +29,13 @@
                                     </div>
                                 </template>
                             </div>
-                            <div class="w-40 md:w-48 custom-inp cursor-pointer bg-green-400 my-4 px-2 md:px-4 py-2 text-white text-xs md:text-sm uppercase font-bold tracking-wide rounded-sm">
+                            <div class="w-40 md:w-48 custom-inp cursor-pointer bg-emerald-500 my-4 px-2 md:px-4 py-2 text-white text-xs md:text-sm uppercase font-bold tracking-wide rounded-sm">
                                 <input type="file" @change="prevImg" accept="image/png, image/jpeg, image/jpg">
                                 <svg class="inline mr-2 w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 5H4v14l9.292-9.294a1 1 0 0 1 1.414 0L20 15.01V5zM2 3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V3.993zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
                                 Change Photo
                             </div>
                         <div class="flex flex-col items-end mt-6 md:mb-auto">
-                            <button :disabled="loading" class="bg-green-500 hover:bg-green-600 text-white font-bold px-3 py-2 focus:outline-none rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">
+                            <button :disabled="loading" class="bg-emerald-500 hover:bg-green-600 text-white font-bold px-3 py-2 focus:outline-none rounded shadow-lg hover:shadow-xl transition duration-200" type="submit">
                                 <template v-if="loading">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: 0; display: block; shape-rendering: auto;" width="24" height="24" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                         <circle cx="50" cy="50" fill="none" stroke="#ffffff" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">

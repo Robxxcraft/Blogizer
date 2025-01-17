@@ -38,15 +38,16 @@ class SettingController extends Controller
                 if (isset($banner1->content)) {
                     Cloudinary::destroy('banner1-'.$banner1->created_at->format('Y-m-d').'_'.$banner1->id);
                 }
-                $banner1Img = Cloudinary::upload($request->file('banner1')->getRealPath(), [
-                    'folder' =>  'blogizer',
-                    'public_id' => 'banner1-'.$banner1->created_at->format('Y-m-d').'_'.$banner1->id,
+                $banner1Img = cloudinary()->upload($request->file('banner1')->getRealPath(), [
+                    'folder' => 'blogizer',
+                    'public_id' => 'banner-1_'.$banner1->created_at->format('Y-m-d').'_'.$banner1->id,
                     'transformation' => [
                         'width' => 900,
-                        'heigth' => 475,
+                        'height' => 475,
+                        'crop' => 'fill'
                     ]
-                ]);
-                $banner1->content = $banner1Img->getSecurePath();
+                ])->getSecurePath();
+                $banner1->content = $banner1Img;
                 $banner1->save();
             }
 
@@ -54,15 +55,16 @@ class SettingController extends Controller
                 if (isset($banner2->content)) {
                     Cloudinary::destroy('banner2-'.$banner2->created_at->format('Y-m-d').'_'.$banner2->id);
                 }
-                $banner2Img = Cloudinary::upload($request->file('banner2')->getRealPath(), [
-                    'folder' =>  'blogizer',
-                    'public_id' => 'banner2-'.$banner2->created_at->format('Y-m-d').'_'.$banner2->id,
+                $banner2Img = cloudinary()->upload($request->file('banner2')->getRealPath(), [
+                    'folder' => 'blogizer',
+                    'public_id' => 'banner-2_'.$banner2->created_at->format('Y-m-d').'_'.$banner2->id,
                     'transformation' => [
                         'width' => 900,
-                        'heigth' => 475,
+                        'height' => 475,
+                        'crop' => 'fill'
                     ]
-                ]);
-                $banner2->content = $banner2Img->getSecurePath();
+                ])->getSecurePath();
+                $banner2->content = $banner2Img;
                 $banner2->save();
             }
 
@@ -70,15 +72,16 @@ class SettingController extends Controller
                 if (isset($banner3->content)) {
                     Cloudinary::destroy('banner3-'.$banner3->created_at->format('Y-m-d').'_'.$banner3->id);
                 }
-                $banner3Img = Cloudinary::upload($request->file('banner3')->getRealPath(), [
-                    'folder' =>  'blogizer',
-                    'public_id' => 'banner3-'.$banner3->created_at->format('Y-m-d').'_'.$banner3->id,
+                $banner3Img = cloudinary()->upload($request->file('banner3')->getRealPath(), [
+                    'folder' => 'blogizer',
+                    'public_id' => 'banner-3_'.$banner3->created_at->format('Y-m-d').'_'.$banner3->id,
                     'transformation' => [
                         'width' => 900,
-                        'heigth' => 475,
+                        'height' => 475,
+                        'crop' => 'fill'
                     ]
-                ]);
-                $banner3->content = $banner3Img->getSecurePath();
+                ])->getSecurePath();
+                $banner3->content = $banner3Img;
                 $banner3->save();
             }
 

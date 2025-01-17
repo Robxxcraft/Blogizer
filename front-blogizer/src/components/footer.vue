@@ -2,7 +2,7 @@
   <footer class="border-t border-gray-200 bg-white">
     <div class="flex flex-col flex-wrap px-4 lg:px-12 py-12 mx-auto md:items-center w-full gap-16 lg:items-start md:flex-row md:flex-nowrap">
       <div class="flex-shrink-0 md:w-64 mx-4">
-        <div class="text-4xl font-bold text-green-500">Blogizer</div>
+        <div class="text-4xl font-bold text-emerald-500">Blogizer</div>
         <p class="mt-2 mb-2 text-sm text-justify text-gray-700">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium
           at sequi cum, impedit fuga in placeat illo eum minima possimus est
@@ -38,7 +38,7 @@
       </div>
       <div class="justify-between w-full lg:flex">
         <div class="w-full px-4 lg:w-1/3 md:w-1/2">
-          <div class="mb-2 text-lg font-bold tracking-wider text-green-500">
+          <div class="mb-2 text-lg font-bold tracking-wider text-emerald-500">
             Useful Links
           </div>
           <ul class="mb-8 space-y-3 text-sm list-none tracking-wide">
@@ -57,7 +57,7 @@
           </ul>
         </div>
         <div class="w-full px-4 lg:w-1/3 md:w-1/2">
-          <div class="mb-2 text-lg font-bold tracking-wider text-green-500">
+          <div class="mb-2 text-lg font-bold tracking-wider text-emerald-500">
             Support
           </div>
           <ul class="mb-8 space-y-3 text-sm list-none tracking-wide">
@@ -73,11 +73,11 @@
           </ul>
         </div>
         <div class="w-full px-4 lg:w-1/3 md:w-1/2">
-          <div class="font-bold tracking-wider text-green-500">
+          <div class="font-bold tracking-wider text-emerald-500">
            Address
           </div>
           <div class="flex items-center">
-            <svg class="text-green-500 mt-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0L12 23.728zm4.95-7.778a7 7 0 1 0-9.9 0L12 20.9l4.95-4.95zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+            <svg class="text-emerald-500 mt-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 23.728l-6.364-6.364a9 9 0 1 1 12.728 0L12 23.728zm4.95-7.778a7 7 0 1 0-9.9 0L12 20.9l4.95-4.95zM12 13a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
             <div class="tracking-wide pl-2 mt-3 text-sm w-full text-gray-500">
               Bekasi, West Java, Indonesia 17320
             </div>

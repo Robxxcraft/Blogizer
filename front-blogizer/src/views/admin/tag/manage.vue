@@ -1,7 +1,7 @@
 <template>
       <header class="flex items-center px-4 justify-between">
-    <div class="py-4 md:px-4 text-lg text-green-500 font-bold">Manage</div>
-    <div class="py-4 block md:hidden text-green-500 hover:text-green-600" id="header" @click="side">
+    <div class="py-4 md:px-4 text-lg text-emerald-500 font-bold">Manage</div>
+    <div class="py-4 block md:hidden text-emerald-500 hover:text-green-600" id="header" @click="side">
       <svg id="header" style="z-index: 0;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs">
         <rect id="header" x="3" y="3" width="7" height="7"></rect>
         <rect id="header" x="14" y="3" width="7" height="7"></rect>
@@ -11,9 +11,9 @@
     </div>
   </header>
       <section class="p-4 md:p-8 md:mt-0">
-        <div class="toast mr-2 translate-x-80 p-2 overflow-hidden z-30 fixed right-0 top-12 transform transition duration-500 bg-white rounded border-l-8 w-60 lg:w-72 shadow-md border-green-400 p-4">
+        <div class="toast mr-2 translate-x-80 p-2 overflow-hidden z-30 fixed right-0 top-12 transform transition duration-500 bg-white rounded border-l-8 w-60 lg:w-72 shadow-md border-emerald-500 p-4">
             <div class="flex items-center">
-                <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"/></svg>
+                <svg class="text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"/></svg>
                 <div class="ml-4">
                 <div id="title" class="text-gray-700 text-sm md:text-base"></div>
                 <div id="subtitle" class="text-xs md:text-sm text-gray-800"></div>
@@ -24,14 +24,14 @@
         <div class="flex justify-end mt-4 mb-8">
           <div class="rounded shadow-sm flex">
             <input type="text" v-model="search" class="w-48 md:w-60 lg:w-auto rounded-l p-2 focus:outline-none text-gray-800 tracking-wide" placeholder="Search" @keyup.enter="searching" />
-            <button class="bg-green-500 hover:bg-green-600 py-2 px-4 focus:outline-none text-white rounded-r" @click="searching">
+            <button class="bg-emerald-500 hover:bg-green-600 py-2 px-4 focus:outline-none text-white rounded-r" @click="searching">
               <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
           </div>
         </div>
         <div class="overflow-auto rounded-lg shadow-sm hidden md:block">
         <table class="w-full">
-            <thead class="text-white border-b-2 border-gray-200 bg-green-500 text-sm text-left">
+            <thead class="text-white border-b-2 border-gray-200 bg-emerald-500 text-sm text-left">
                 <th class="p-3 font-bold tracking-wide">ID</th>
                 <th class="p-3 font-bold tracking-wide">Name</th>
                 <th class="p-3 font-bold tracking-wide">Slug</th>
@@ -41,7 +41,7 @@
             <tbody class="divide-y divide-gray-100 bg-white">
                 <template v-if="!sloading">
                   <tr class="row" v-for="(tag, index) in tags" :key="index">
-                    <td class="p-3 text-green-500 hover:text-green-600 whitespace-nowrap font-bold">{{tag.id}}</td>
+                    <td class="p-3 text-emerald-500 hover:text-green-600 whitespace-nowrap font-bold">{{tag.id}}</td>
                     <td class="p-3 text-gray-700 whitespace-nowrap">{{tag.name}}</td>
                     <td class="p-3 text-gray-700 whitespace-nowrap">{{tag.slug}}</td>
                     <td class="p-3 text-gray-700 whitespace-nowrap">{{tag.created_at}}</td>
@@ -77,7 +77,7 @@
           <div class="bg-white p-4 rounded-lg shadow-sm" v-for="(tag, index) in tags" :key="index">
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center">
-                <a href="#" class="text-green-500 mr-2 font-bold hover:underline">{{tag.id}}</a>
+                <a href="#" class="text-emerald-500 mr-2 font-bold hover:underline">{{tag.id}}</a>
                 <div class="text-gray-400 text-xs ml-1 font-bold">{{tag.created_at}}</div>      
               </div>
               <div class="flex">
@@ -91,13 +91,13 @@
             </div>
           </div>
         </div>
-        <div class="mt-8 flex items-center justify-end space-x-2 text-green-500">
+        <div class="mt-8 flex items-center justify-end space-x-2 text-emerald-500">
           <button class="h-8 w-8 hover:text-green-800 focus:outline-none" v-if="currentPage > 1" @click="getTags(currentPage - 1)">
             <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
           </button>
           <div class="space-x-1">
             <template v-for="(page, index) in pagination" :key="index">
-              <button :class="page === currentPage ? 'bg-green-500 shadow-sm hover:shadow-md focus:outline-none text-white border border-green-500 py-1 px-3 rounded' : 'hover:bg-green-500 shadow-sm hover:text-white hover:shadow-md focus:outline-none border border-green-500 py-1 px-3 rounded'" @click="getTags(page)">{{page}}</button>
+              <button :class="page === currentPage ? 'bg-emerald-500 shadow-sm hover:shadow-md focus:outline-none text-white border border-emerald-500 py-1 px-3 rounded' : 'hover:bg-emerald-500 shadow-sm hover:text-white hover:shadow-md focus:outline-none border border-emerald-500 py-1 px-3 rounded'" @click="getTags(page)">{{page}}</button>
             </template>
           </div>
           <button class="h-8 w-8 hover:text-green-800 focus:outline-none" v-if="nextLink" @click="getTags(currentPage + 1)">

@@ -8,7 +8,7 @@
                         <template v-slot:title>
                             <div>
                                 <div class="font-bold text-base md:text-xl text-gray-700 mb-2 tracking-wide">Popular Posts</div>
-                                <div class="bg-green-400 rounded-sm w-30 md:w-36 h-1"></div>
+                                <div class="bg-emerald-500 rounded-sm w-30 md:w-36 h-1"></div>
                             </div>
                         </template>
                     </PostsList>
@@ -21,7 +21,7 @@
                                 <div class="space-y-2">
                                     <div v-for="(category, index) in categories" :key="index">
                                     <router-link :to="`/categories/${category.slug}`">
-                                    <div class="flex mb-1 items-center text-gray-800 font-bold text-sm uppercase transition hover:text-green-500">
+                                    <div class="flex mb-1 items-center text-gray-800 font-bold text-sm uppercase transition hover:text-emerald-500">
                                         <div class="mr-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 5v14h16V7h-8.414l-2-2H4zm8.414 0H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2z"/></svg>
                                         </div>
@@ -31,7 +31,7 @@
                                     </router-link>
                                     </div>
 
-                                    <div class="cursor-pointer flex items-center text-gray-700 font-bold text-sm uppercase transition hover:text-green-500">
+                                    <div class="cursor-pointer flex items-center text-gray-700 font-bold text-sm uppercase transition hover:text-emerald-500">
                                         <router-link to="/categories">See More...</router-link>
                                     </div>
                                 </div>
@@ -45,7 +45,7 @@
                                         </div>
                                     </template>
 
-                                    <div class="cursor-pointer flex items-center text-gray-700 font-bold text-sm uppercase transition hover:text-green-500">
+                                    <div class="cursor-pointer flex items-center text-gray-700 font-bold text-sm uppercase transition hover:text-emerald-500">
                                         <router-link to="/categories">See More...</router-link>
                                     </div>
                             </template>
@@ -54,7 +54,7 @@
                             <div class="text-xl font-bold text-gray-700 mb-3">Tags</div>
                             <template v-if="tags">
                                 <div class="flex items-center flex-wrap gap-2">
-                                    <div v-for="(tag, index) in tags" :key="index" class="px-3 py-1  text-sm border border-gray-200 rounded-sm transition hover:bg-green-500 hover:text-white">
+                                    <div v-for="(tag, index) in tags" :key="index" class="px-3 py-1  text-sm border border-gray-200 rounded-sm transition hover:bg-emerald-500 hover:text-white">
                                         <router-link :to="`/tag/${tag.slug}`">{{tag.name}}</router-link>
                                     </div>
                                 </div>

@@ -1,34 +1,152 @@
+<script setup>
+import { onClickOutside } from '@vueuse/core'
+import { reactive, ref } from '@vue/reactivity';
+import { onMounted } from '@vue/runtime-core';
+import api from '../axios';
+
+const props = defineProps(['url', 'one_grid'])
+const posts = ref([])
+const loading = ref(false)
+const sloading = ref(false)
+
+const nextLink = ref('');
+
+const sortEl = ref(null)
+const isSortActive = ref(false)
+const sorts = reactive([])
+
+onClickOutside(sortEl, (e) => {
+    if (e.target.id != 'filter-button') {
+        if (isSortActive.value) {
+            isSortActive.value = false
+        }
+    }
+})
+
+const sorting = (sortName)=>{
+    if (sorts.length > 0) {
+        for (let i = 0; i < sorts.length; i++) {
+            if (sorts[i].includes(sortName)) {
+                if (sorts[i].includes('asc')) {
+                    sorts[i] = sortName+":desc"
+                } else if (sorts[i].includes('desc')) {
+                    sorts[i] = sortName
+                } else {
+                    sorts[i] = sortName+":asc"
+                }
+            }
+        }
+        if (!sorts.filter((val)=>val.includes(sortName)).length > 0) {
+            sorts.push(sortName+":asc")
+        }
+    } else {
+        return sorts.push(sortName+":asc")
+    }
+    getPosts()
+}
+
+const getPosts = () => {
+    sloading.value = true
+    let querystring = ''
+    if (sorts.length > 0) {
+        for (let sort of sorts) {
+            let splited = sort.split(":")
+            if (splited.length == 2) {
+                querystring = querystring+splited[0]+'='+splited[1]+'&'
+            }
+        }
+    }
+    api.get(`/api/lists/posts/${props.url}?${querystring}`).then(res => {
+        posts.value = res.data.data
+        nextLink.value = res.data.links.next
+        sloading.value = false
+    })
+}
+
+onMounted(()=>{
+    getPosts()
+})
+
+const loadmore = () => {
+    loading.value = true
+    let querystring = ''
+    if (sorts.length > 0) {
+        for (let sort of sorts) {
+            let splited = sort.split(":")
+            if (splited.length == 2) {
+                querystring = querystring+splited[0]+'='+splited[1]+'&'
+            }
+        }
+    }
+    if (nextLink.value) {
+        api.get(`${nextLink.value}?${querystring}`).then(res => {
+            posts.value.push(...res.data.data)
+            nextLink.value = res.data.links.next
+            loading.value = false
+        })
+    }
+}
+
+const outside = (e) => {
+}
+</script>
+
 <template>
-    <div class="flex justify-between">
+    <div class="flex justify-between items-end">
         <slot name="title"></slot>
         <div class="relative flex items-end">
             <div class="flex justify-end items-center">
-                <div class="tracking-wide select-none">
-                    <div class="text-green-400 text-sm font-bold cursor-pointer hover:bg-green-500 hover:text-white px-2 md:px-4 py-0.5 py-1 rounded" @click="monthFilter">
-                        <span class="inline">{{monthYears.months[currMonth]}}</span> 
-                        <svg class="ml-2 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z"/></svg>
+                <div class="relative">
+                    <div id="filter-button" @click="isSortActive = !isSortActive" :class="`cursor-pointer bg-white rounded-lg shadow border-2 ${isSortActive ? 'border-gray-800' : 'border-white'} p-2 text-gray-700`">
+                        <svg id="filter-button" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M11.9498 7.94975L10.5356 9.36396L8.00079 6.828L8.00004 20H6.00004L6.00079 6.828L3.46451 9.36396L2.05029 7.94975L7.00004 3L11.9498 7.94975ZM21.9498 16.0503L17 21L12.0503 16.0503L13.4645 14.636L16.0008 17.172L16 4H18L18.0008 17.172L20.5356 14.636L21.9498 16.0503Z"></path></svg>
                     </div>
-                    <div class="month absolute hidden bg-white top-12 right-0 rounded-sm shadow" style="z-index: 5;">
-                        <div class="grid grid-cols-4 w-60">
-                            <div v-for="(month, index ) in monthYears.months" :key="index" class="p-3 cursor-pointer text-sm flex justify-center text-gray-500 hover:text-white hover:bg-green-500 font-bold" @click="changeMonth(index)">{{month}}</div>
+                    <Transition name="fade">
+                        <div ref="sortEl" v-if="isSortActive" class="overflow-hidden absolute bg-white top-12 right-0 w-36 max-w-xl rounded shadow-lg z-10 pt-3">
+                            <div class="px-4 bg-white pb-2 text-sm font-bold text-gray-800 w-full max-w-lg">Filter by...</div>
+                            <hr>
+                            <div @click="sorting('title')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
+                                <div>Title</div>
+                                <div v-if="sorts.includes('title:asc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
+                                </div>
+                                <div v-else-if="sorts.includes('title:desc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
+                                </div>
+                            </div>
+                            <div @click="sorting('created_at')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
+                                <div>Created At</div>
+                                <div v-if="sorts.includes('created_at:asc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
+                                </div>
+                                <div v-else-if="sorts.includes('created_at:desc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
+                                </div>
+                            </div>
+                            <div @click="sorting('liked')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
+                                <div>Liked</div>
+                                <div v-if="sorts.includes('liked:asc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
+                                </div>
+                                <div v-else-if="sorts.includes('liked:desc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
+                                </div>
+                            </div>
+                            <div @click="sorting('commented')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
+                                <div>Commented</div>
+                                <div v-if="sorts.includes('commented:asc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
+                                </div>
+                                <div v-else-if="sorts.includes('commented:desc')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="tracking-wide select-none">
-                    <div class="text-green-400 text-sm font-bold cursor-pointer hover:bg-green-500 hover:text-white px-2 md:px-4 py-0.5 py-1 rounded" @click="yearFilter">
-                        <span class="inline">{{currYear}}</span>
-                        <svg class="ml-2 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z"/></svg>
-                    </div>
-                    <div class="year absolute hidden bg-white top-12 right-0 rounded-sm shadow" style="z-index: 5;">
-                        <div class="grid grid-cols-4 w-60">
-                            <div v-for="(year, index) in monthYears.years" :key="index" class="p-3 text-sm text-gray-500 font-bold hover:bg-green-500 hover:text-white cursor-pointer" @click="changeYear(year)">{{year}}</div>
-                        </div>
-                    </div>
+                    </Transition>
                 </div>
             </div>
         </div>
     </div>
-    <div class="grid md:grid-cols-2 gap-4 my-4">
+    <div :class="`grid ${props.one_grid ? '' : 'md:grid-cols-2'} gap-4 my-4`">
         <template v-if="!sloading">
             <div v-for="(post, index) in posts" :key="index" class="flex bg-white rounded overflow-hidden shadow-sm h-36 md:h-40 lg:44">
                 <div class="overflow-hidden basis-half">
@@ -40,20 +158,22 @@
                         <div>{{post.created_at}}</div>
                     </div>
                     <div class="flex items-center">
-                        <img src="../assets/logo.png" class="w-6 h-6 md:w-10 md:h-10 rounded-full mr-3">
+                        <div class="mr-3 w-9 h-9 rounded-full overflow-hidden shadow-sm cursor-pointer">
+                            <img :src="post.userphoto" alt="Avatar" class="w-full h-full object-cover" />
+                        </div>
                         <div class="flex flex-col justify-between font-bold">
                             <div class="text-xs text-gray-400">Creator</div>
                             <div class="text-sm text-gray-600 w-28 truncate">{{post.username}}</div>
                         </div>
                     </div>
-                    <div class="text-gray-800 h-10 truncate text-sm hover:text-green-500 font-bold two-lines"><router-link :to="`/posts/${post.slug}/details`">{{post.title}}</router-link></div>
+                    <div class="text-gray-800 h-10 truncate text-sm hover:text-emerald-500 font-bold two-lines"><router-link :to="`/posts/${post.slug}`">{{post.title}}</router-link></div>
                     <div class="flex">
                         <div class="basis-half w-max hidden md:block">
                             <router-link :to="`/posts/${post.slug}/details`">
-                                <div class="inline-block text-white text-xs py-1.5 px-2 rounded-sm uppercase font-bold bg-green-500 border border-green-500 shadow-sm hover:shadow-md hover:text-green-500 hover:bg-transparent transition">Read</div>
+                                <div class="inline-block text-white text-xs py-1.5 px-2 rounded-sm uppercase font-bold bg-emerald-500 border border-emerald-500 shadow-sm hover:shadow-md hover:text-emerald-500 hover:bg-transparent transition">Read</div>
                             </router-link>
                         </div>
-                        <div class="basis-half md:text-right text-green-400 truncate text-ellipsis text-xs uppercase font-bold md:mt-2">
+                        <div class="basis-half md:text-right text-emerald-500 truncate text-ellipsis text-xs uppercase font-bold md:mt-2">
                             {{post.category}}
                         </div>
                     </div>
@@ -64,7 +184,7 @@
             </template>
         </template>
         <template v-else>
-            <div v-for="i in 6" :key="i" class="flex bg-white rounded overflow-hidden shadow-sm h-36 md:h-40 lg:44">
+            <div v-for="i in 6" :key="i" class="flex bg-white rounded overflow-hidden shadow-sm">
                 <div class="overflow-hidden w-full">
                     <div class="w-96 h-full animate-pulse bg-gray-200"></div>
                 </div>
@@ -84,13 +204,13 @@
                         <div class="w-full h-2 animate-pulse bg-gray-200"></div>
                     </div>
                     <div>
-                        <div class="w-12 h-8 animate-pulse bg-gray-200"></div>
+                        <div class="w-12 h-4 animate-pulse bg-gray-200"></div>
                     </div>
                 </div>
             </div>
         </template>
     </div>
-    <div v-if="nextLink" class="flex justify-center rounded-sm font-bold tracking-wide text-base md:text-lg bg-gray-50 p-3 shadow-sm text-gray-600 hover:text-green-500 border-2 hover:border-green-500 hover:shadow-md mb-8 transition cursor-pointer" @click="loadmore()">
+    <div v-if="nextLink" class="flex justify-center rounded-sm font-bold tracking-wide text-base md:text-lg bg-gray-50 p-3 shadow-sm text-gray-600 hover:text-emerald-500 border-2 hover:border-emerald-500 hover:shadow-md mb-8 transition cursor-pointer" @click="loadmore()">
         <template v-if="loading">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: 0; background: none; display: block; shape-rendering: auto;" width="24" height="24" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                 <circle cx="50" cy="50" fill="none" stroke="#52c66e" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
@@ -103,81 +223,3 @@
         </template>
     </div>
 </template>
-
-<script>
-import { ref } from '@vue/reactivity';
-import { computed, onMounted } from '@vue/runtime-core';
-import api from '../axios';
-export default {
-  props: ['url'],
-  setup(props) {
-    const posts = ref([])
-    const loading = ref(false)
-    const sloading = ref(false)
-    const monthYears = ref({
-        months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Des'],
-        years: []
-    })
-    const currMonth = ref(new Date().getMonth());
-    const currYear = ref(new Date().getFullYear());
-    const nextLink = ref('');
-
-    const getPosts = () => {
-        sloading.value = true
-        api.get(`/api/lists/posts/${props.url}?month=${currMonth.value+1}&year=${currYear.value}`).then(res => {
-            posts.value = res.data.data
-            nextLink.value = res.data.links.next
-            sloading.value = false
-        })
-    }
-
-    onMounted(()=>{
-        monthYears.value.years = computed(()=>{
-            let year = new Date().getFullYear()+1
-            let years = []
-            for (let index = 0; index <= 10; index++) {
-                year -= 1
-                years.push(year)
-            }
-            return years
-        })
-        getPosts()
-    })
-
-    const loadmore = () => {
-        loading.value = true
-        if (nextLink.value) {
-            api.get(`${nextLink.value}&month=${currMonth.value+1}&year=${currYear.value}`).then(res => {
-                posts.value.push(...res.data.data)
-                nextLink.value = res.data.links.next
-                loading.value = false
-            })
-        }
-    }
-
-    const monthFilter = () => {
-      document.querySelector(".month").classList.toggle("open")
-      document.querySelector(".year").classList.remove("open")
-    };
-
-    const yearFilter = () => {
-      document.querySelector(".month").classList.remove("open")
-      document.querySelector(".year").classList.toggle("open")
-    };
-
-    const changeMonth = (data) => {
-      document.querySelector(".month").classList.toggle("open")
-      currMonth.value = data
-      getPosts()
-    };
-
-    const changeYear = (data) => {
-      document.querySelector(".year").classList.toggle("open")
-      currYear.value = data;
-      getPosts();
-    };
-
-    return { posts, loading, sloading, loadmore, nextLink, monthYears, currMonth, currYear, monthFilter, yearFilter, changeMonth, changeYear }
-  },
-};
-</script>

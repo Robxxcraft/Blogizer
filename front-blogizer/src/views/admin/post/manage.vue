@@ -1,7 +1,7 @@
 <template>
       <header class="flex items-center px-4 justify-between">
-    <div class="py-4 md:px-4 text-lg text-green-500 font-bold">Manage</div>
-    <div class="py-4 block md:hidden text-green-500 hover:text-green-600" id="header" @click="side">
+    <div class="py-4 md:px-4 text-lg text-emerald-500 font-bold">Manage</div>
+    <div class="py-4 block md:hidden text-emerald-500 hover:text-green-600" id="header" @click="side">
       <svg id="header" style="z-index: 0;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs">
         <rect id="header" x="3" y="3" width="7" height="7"></rect>
         <rect id="header" x="14" y="3" width="7" height="7"></rect>
@@ -11,9 +11,9 @@
     </div>
   </header>
       <section class="p-4 md:p-8 md:mt-0">
-        <div class="toast mr-2 translate-x-80 p-2 overflow-hidden z-30 fixed right-0 top-12 transform transition duration-500 bg-white rounded border-l-8 w-60 lg:w-72 shadow-md border-green-400 p-4">
+        <div class="toast mr-2 translate-x-80 p-2 overflow-hidden z-30 fixed right-0 top-12 transform transition duration-500 bg-white rounded border-l-8 w-60 lg:w-72 shadow-md border-emerald-500 p-4">
             <div class="flex items-center">
-                <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"/></svg>
+                <svg class="text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"/></svg>
                 <div class="ml-4">
                 <div id="title" class="text-gray-700 text-sm md:text-base"></div>
                 <div id="subtitle" class="text-xs md:text-sm text-gray-800"></div>
@@ -24,14 +24,14 @@
         <div class="flex justify-end mt-4 mb-8">
           <div class="rounded shadow-sm flex">
             <input type="text" v-model="search" class="w-48 md:w-60 lg:w-auto rounded-l p-2 focus:outline-none text-gray-800 tracking-wide" placeholder="Search" @keyup.enter="searching" />
-            <button class="bg-green-500 hover:bg-green-600 px-4 py-2 focus:outline-none text-white rounded-r" @click="searching">
+            <button class="bg-emerald-500 hover:bg-green-600 px-4 py-2 focus:outline-none text-white rounded-r" @click="searching">
               <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
           </div>
         </div>
         <div class="overflow-auto rounded-lg shadow hidden xl:block">
         <table class="w-full">
-            <thead class="text-white border-b-2 border-gray-200 bg-green-500 text-left">
+            <thead class="text-white border-b-2 border-gray-200 bg-emerald-500 text-left">
                 <th class="p-3 text-sm font-bold tracking-wide">ID</th>
                 <th class="p-3 text-sm font-bold tracking-wide">Title</th>
                 <th class="p-3 text-sm font-bold tracking-wide">Slug</th>
@@ -49,7 +49,7 @@
                   <tr class="row" v-for="(post, index) in posts" :key="index">
                       <td class="p-3 whitespace-nowrap w-8">
                         <router-link to="/">
-                          <div class="font-bold text-green-500 hover:text-green-600">
+                          <div class="font-bold text-emerald-500 hover:text-green-600">
                           {{post.id}}
                           </div>
                         </router-link>
@@ -67,13 +67,13 @@
                         </template>
                       </td>
                       <td class="p-3 text-gray-700 whitespace-nowrap w-28">
-                        <div class="bg-green-500 text-sm text-center inline-block text-white px-2 py-1 rounded-md shadow-sm">{{post.category}}</div>
+                        <div class="bg-emerald-500 text-sm text-center inline-block text-white px-2 py-1 rounded-md shadow-sm">{{post.category}}</div>
                       </td>
                       <td class="p-3 whitespace-nowrap w-12">
-                        <div class="bg-green-100 border border-green-500 text-green-500 font-bold text-sm rounded-full shadow-sm px-3 py-1 text-center inline-block">{{post.likes}}</div>
+                        <div class="bg-green-100 border border-emerald-500 text-emerald-500 font-bold text-sm rounded-full shadow-sm px-3 py-1 text-center inline-block">{{post.likes}}</div>
                       </td>
                       <td class="p-3 whitespace-nowrap w-12">
-                        <div class="bg-green-100 border border-green-500 text-green-500 font-bold text-sm rounded-full shadow-sm px-3 py-1 text-center inline-block">{{post.comments}}</div>
+                        <div class="bg-green-100 border border-emerald-500 text-emerald-500 font-bold text-sm rounded-full shadow-sm px-3 py-1 text-center inline-block">{{post.comments}}</div>
                       </td>
                       <td class="p-3 text-gray-700 whitespace-nowrap w-24">
                         <div v-for="(tag, index) in post.tags" :key="index" class="rounded-sm shadow-sm bg-white border p-1">{{tag.name}}</div>
@@ -142,8 +142,8 @@
               <div class="p-3 flex gap-8 w-full justify-between">
                   <div class="flex flex-col w-full">
                       <div class="flex w-full">
-                      <a href="#" class="text-green-500 mr-2 font-bold hover:underline">{{post.id}}</a>
-                        <div class="bg-green-500 text-white ml-auto px-3 py-1 rounded-sm text-sm uppercase font-bold mb-2 text-right">{{post.category}}</div>
+                      <a href="#" class="text-emerald-500 mr-2 font-bold hover:underline">{{post.id}}</a>
+                        <div class="bg-emerald-500 text-white ml-auto px-3 py-1 rounded-sm text-sm uppercase font-bold mb-2 text-right">{{post.category}}</div>
                       </div>
                         <div class="text-gray-400 text-xs mb-2 font-bold">{{post.created_at}}</div>
                       <div class="text-sm truncate two-lines text-gray-700 mb-1 font-bold truncate two-lines">{{post.title}}</div>
@@ -170,13 +170,13 @@
               </div>
           </div>
         </div>
-        <div class="mt-8 flex items-center justify-end space-x-2 text-green-500">
+        <div class="mt-8 flex items-center justify-end space-x-2 text-emerald-500">
           <button class="h-8 w-8 hover:text-green-800 focus:outline-none" v-if="currentPage > 1" @click="getPosts(currentPage - 1)">
             <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
           </button>
           <div class="space-x-1">
             <template v-for="(page, index) in pagination" :key="index">
-              <button :class="page === currentPage ? 'bg-green-500 shadow-sm hover:shadow-lg focus:outline-none text-white border border-green-500 py-1 px-3 rounded' : 'hover:bg-green-500 shadow-sm hover:text-white hover:shadow-lg focus:outline-none border border-green-500 py-1 px-3 rounded'" @click="getPosts(page)">{{page}}</button>
+              <button :class="page === currentPage ? 'bg-emerald-500 shadow-sm hover:shadow-lg focus:outline-none text-white border border-emerald-500 py-1 px-3 rounded' : 'hover:bg-emerald-500 shadow-sm hover:text-white hover:shadow-lg focus:outline-none border border-emerald-500 py-1 px-3 rounded'" @click="getPosts(page)">{{page}}</button>
             </template>
           </div>
           <button class="h-8 w-8 hover:text-green-800 focus:outline-none" v-if="nextLink" @click="getPosts(currentPage + 1)">

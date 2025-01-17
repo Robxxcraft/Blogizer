@@ -1,8 +1,8 @@
 <template>
     <Navigation />
-    <div class="toast mr-2 translate-x-80 p-2 overflow-hidden z-30 fixed right-0 top-12 transform transition duration-500 bg-white rounded border-l-8 w-60 lg:w-72 shadow-md border-green-400 p-4">
+    <div class="toast mr-2 translate-x-80 p-2 overflow-hidden z-30 fixed right-0 top-12 transform transition duration-500 bg-white rounded border-l-8 w-60 lg:w-72 shadow-md border-emerald-500 p-4">
         <div class="flex items-center">
-            <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"/></svg>
+            <svg class="text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"/></svg>
             <div class="ml-4">
                 <div id="title" class="text-gray-700 text-sm md:text-base"></div>
                 <div id="subtitle" class="text-xs md:text-sm text-gray-800"></div>
@@ -27,7 +27,7 @@
             </div>
         </div>
     </template>
-    <main class="py-11 md:py-20 bg-gray-100">
+    <main class="py-11 md:py-20 bg-gray-100" v-if="user">
         <div class="md:mx-10 lg:mx-16">
             <div class="w-full flex flex-col gap-8 md:flex-row bg-white p-4 mb-8">
                 <div class="basis-half">
@@ -48,7 +48,8 @@
                                     <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"/></svg>
                                 </router-link>
                             </div>
-                        <div class="text-gray-400 text-sm mb-3">{{user.created_at}}</div></div>
+                            <div class="text-gray-400 text-sm mb-3">{{user.created_at}}</div>
+                        </div>
                     </div>
                     <div class="flex">
                         <div class="mt-8 tracking-wide">
@@ -107,29 +108,29 @@
                 <div class="flex justify-between mb-4">
                     <div>
                         <div class="font-bold text-base md:text-xl text-gray-700 mt-8 mb-2 tracking-wide">Posts</div>
-                        <div class="bg-green-400 rounded-sm w-14 md:w-16 h-1"></div>
+                        <div class="bg-emerald-500 rounded-sm w-14 md:w-16 h-1"></div>
                     </div>
                     <div class="relative flex items-end">
                         <div class="flex justify-end items-center">
                         <div class="tracking-wide select-none">
-                            <div class="text-green-400 text-sm font-bold cursor-pointer hover:bg-green-500 hover:text-white px-2 md:px-4 py-0.5 py-1 rounded" @click="monthF">
+                            <div class="text-emerald-500 text-sm font-bold cursor-pointer hover:bg-emerald-500 hover:text-white px-2 md:px-4 py-0.5 py-1 rounded" @click="monthF">
                                 <span class="inline">{{monthYears.months[currMonth]}}</span> 
                                 <svg class="ml-2 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z"/></svg>
                             </div>
                             <div class="month absolute hidden bg-white top-20 right-0 rounded-sm shadow" style="z-index: 5;">
                                 <div class="grid grid-cols-4 w-60">
-                                    <div v-for="(month, index ) in monthYears.months" :key="index" class="p-3 cursor-pointer text-sm flex justify-center text-gray-500 hover:text-white hover:bg-green-500 font-bold" @click="changeM(index)">{{month}}</div>
+                                    <div v-for="(month, index ) in monthYears.months" :key="index" class="p-3 cursor-pointer text-sm flex justify-center text-gray-500 hover:text-white hover:bg-emerald-500 font-bold" @click="changeM(index)">{{month}}</div>
                                 </div>
                             </div>
                         </div>
                         <div class="tracking-wide select-none">
-                            <div class="text-green-400 text-sm font-bold cursor-pointer hover:bg-green-500 hover:text-white px-2 md:px-4 py-0.5 py-1 rounded" @click="yearF">
+                            <div class="text-emerald-500 text-sm font-bold cursor-pointer hover:bg-emerald-500 hover:text-white px-2 md:px-4 py-0.5 py-1 rounded" @click="yearF">
                                 <span class="inline">{{currYear}}</span>
                                 <svg class="ml-2 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z"/></svg>
                             </div>
                             <div class="year absolute hidden bg-white top-20 right-0 rounded-sm shadow" style="z-index: 5;">
                                 <div class="grid grid-cols-4 w-60">
-                                    <div v-for="(year, index) in monthYears.years" :key="index" class="p-3 text-sm text-gray-500 font-bold hover:bg-green-500 hover:text-white cursor-pointer" @click="changeY(year)">{{year}}</div>
+                                    <div v-for="(year, index) in monthYears.years" :key="index" class="p-3 text-sm text-gray-500 font-bold hover:bg-emerald-500 hover:text-white cursor-pointer" @click="changeY(year)">{{year}}</div>
                                 </div>
                             </div>
                         </div>
@@ -176,16 +177,16 @@
                                             <div class="text-sm text-gray-600 w-28 truncate">{{post.username}}</div>
                                         </div>
                                     </div>
-                                    <div class="text-gray-800 h-10 truncate text-sm hover:text-green-500 font-bold two-lines"><router-link :to="`/posts/${post.slug}/details`">{{post.title}}</router-link></div>
+                                    <div class="text-gray-800 h-10 truncate text-sm hover:text-emerald-500 font-bold two-lines"><router-link :to="`/posts/${post.slug}/details`">{{post.title}}</router-link></div>
                                     <div class="flex">
                                         <div class="basis-half w-max hidden xl:block ">
                                             <router-link :to="`/posts/${post.slug}/details`">
-                                                <div class="inline-block text-white text-xs py-1.5 px-2 rounded-sm uppercase font-bold bg-green-500 border border-green-500 shadow-sm hover:shadow-md hover:text-green-500 hover:bg-transparent transition">
+                                                <div class="inline-block text-white text-xs py-1.5 px-2 rounded-sm uppercase font-bold bg-emerald-500 border border-emerald-500 shadow-sm hover:shadow-md hover:text-emerald-500 hover:bg-transparent transition">
                                                     Read
                                                 </div>
                                             </router-link>
                                         </div>
-                                        <div class="basis-half lg:text-right text-green-400 truncate text-ellipsis text-xs uppercase font-bold md:mt-2">
+                                        <div class="basis-half lg:text-right text-emerald-500 truncate text-ellipsis text-xs uppercase font-bold md:mt-2">
                                             {{post.category}}
                                         </div>
                                     </div>
@@ -225,7 +226,7 @@
                         </template>
                 </div>
                     <template v-if="currLinks">
-                        <div class="flex justify-center rounded-sm font-bold tracking-wide text-base md:text-lg bg-gray-50 p-3 shadow-sm text-gray-600 hover:text-green-500 border-2 hover:border-green-500 hover:shadow-md mb-8 transition cursor-pointer" @click="loadmore()">
+                        <div class="flex justify-center rounded-sm font-bold tracking-wide text-base md:text-lg bg-gray-50 p-3 shadow-sm text-gray-600 hover:text-emerald-500 border-2 hover:border-emerald-500 hover:shadow-md mb-8 transition cursor-pointer" @click="loadmore()">
                             <template v-if="loading">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: 0; background: none; display: block; shape-rendering: auto;" width="24" height="24" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                 <circle cx="50" cy="50" fill="none" stroke="#52c66e" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
@@ -245,7 +246,7 @@
                         <template v-if="popularPost.length >= 0">
                             <div class="space-y-3">
                                 <div v-for="(popular, index) in popularPost" :key="index">
-                                    <router-link :to="`/posts/${popular.slug}/details`">
+                                    <router-link :to="`/posts/${popular.slug}`">
                                         <div class="flex">
                                             <div class="flex-shrink-0 h-16 w-20 rounded overflow-hidden shadow-sm">
                                                 <template v-if="popular.photo">
@@ -263,7 +264,7 @@
                                                     {{popular.created_at}}
                                                 </div>
                                                 <div
-                                                    class="leading-5 truncate two-lines font-bold text-gray-800 transition-color hover:text-green-500">
+                                                    class="leading-5 truncate two-lines font-bold text-gray-800 transition-color hover:text-emerald-500">
                                                     {{popular.title}}
                                                 </div>
                                             </div>

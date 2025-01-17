@@ -12,6 +12,7 @@ use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\TagController;
 use App\Http\Controllers\API\ChartController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Middleware\isAdmin;
 use App\Http\Resources\UserResource;
 
 /*
@@ -37,7 +38,9 @@ Route::get('/email/verify/resend', [VerifyController::class, 'resend'])->middlew
 Route::post('/forgot/send', [AuthController::class, 'forgot']);
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::middleware('isAdmin')->group(function(){
+    Route::middleware(isAdmin::class)->group(function(){
+        Route::post('/setting/banner', [SettingController::class, 'change']);
+        
         Route::get('/categories', [CategoryController::class, 'index']);
         Route::post('/categories', [CategoryController::class, 'create']);
         Route::get('/categories/{id}', [CategoryController::class, 'show']);
@@ -62,7 +65,6 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/dashboard', [ChartController::class, 'dashboard']);
         Route::get('/chart', [ChartController::class, 'index']);
 
-        Route::post('/setting/banner', [SettingController::class, 'change']);
     });
     
     Route::get('/logout', [AuthController::class, 'logout']);

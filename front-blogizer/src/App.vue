@@ -15,7 +15,7 @@ export default {
     Loading
   },
   setup() {
-    const load = ref(true)
+    const load = ref(false)
     store.mutations.getUser().finally(()=>{
       load.value = false
     })
