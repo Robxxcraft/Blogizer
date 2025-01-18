@@ -1,5 +1,5 @@
 <script setup>
-import { onClickOutside } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core';
 import { reactive, ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import api from '../axios';
@@ -149,10 +149,10 @@ const outside = (e) => {
     <div :class="`grid ${props.one_grid ? '' : 'md:grid-cols-2'} gap-4 my-4`">
         <template v-if="!sloading">
             <div v-for="(post, index) in posts" :key="index" class="flex bg-white rounded overflow-hidden shadow-sm h-36 md:h-40 lg:44">
-                <div class="overflow-hidden basis-half">
+                <div class="overflow-hidden basis-5/12">
                     <img :src="post.photo" class="object-cover h-full transform hover:scale-110 transition duration-500" />
                 </div>
-                <div class="flex flex-col justify-between basis-half p-2 tracking-wide">
+                <div class="flex flex-col justify-between basis-7/12 p-3 tracking-wide">
                     <div class="text-gray-400 text-xs flex items-end">
                         <svg class="inline mr-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         <div>{{post.created_at}}</div>
@@ -185,10 +185,10 @@ const outside = (e) => {
         </template>
         <template v-else>
             <div v-for="i in 6" :key="i" class="flex bg-white rounded overflow-hidden shadow-sm">
-                <div class="overflow-hidden w-full">
+                <div class="basis-5/12 overflow-hidden w-full">
                     <div class="w-96 h-full animate-pulse bg-gray-200"></div>
                 </div>
-                <div class="flex flex-col justify-between w-full h-48 p-2 py-2 space-y-2">
+                <div class="basis-7/12 flex flex-col justify-between w-full h-48 p-3 space-y-2">
                     <div class="flex items-end mb-1">
                         <div class="w-24 h-2 animate-pulse bg-gray-200"></div>
                     </div>
