@@ -1,3 +1,26 @@
+<script setup>
+import Navigation from "../components/navigation.vue";
+import Footers from "../components/footer.vue";
+import PostsList from "../components/PostsList.vue";
+import { ref } from '@vue/reactivity';
+import api from '../axios';
+import { onMounted } from '@vue/runtime-core';
+
+const categories = ref([])
+const categorySloading = ref(false)
+const tags = ref([])
+onMounted(() => {
+    api.get('/api/home/tags').then(res => {
+        tags.value = res.data.data
+    })
+    categorySloading.value = true
+    api.get('/api/home/categories').then(res => {
+        categories.value = res.data.data
+        categorySloading.value = false
+    })
+})
+</script>
+
 <template>
     <div class="overflow-hidden">
         <Navigation />
@@ -66,36 +89,3 @@
         <Footers />
     </div>
 </template>
-
-<script>
-import Navigation from "../components/navigation.vue";
-import Footers from "../components/footer.vue";
-import PostsList from "../components/PostsList.vue";
-import { ref } from '@vue/reactivity';
-import api from '../axios';
-import { onMounted } from '@vue/runtime-core';
-export default {
-    components: {
-        Navigation,
-        Footers,
-        PostsList
-    },
-    setup() {
-        const categories = ref([])
-        const categorySloading = ref(false)
-        const tags = ref([])
-        onMounted(() => {
-            api.get('/api/home/tags').then(res => {
-                tags.value = res.data.data
-            })
-            categorySloading.value = true
-            api.get('/api/home/categories').then(res => {
-                categories.value = res.data.data
-                categorySloading.value = false
-            })
-        })
-
-        return { categories, tags, categorySloading }
-    },
-}
-</script>

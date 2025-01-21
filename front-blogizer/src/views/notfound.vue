@@ -11,7 +11,7 @@
                             We couldn't find the page you're looking for.
                         </div>
                         <router-link to="/">
-                            <div class="flex bg-emerald-500 hover:bg-green-600 shadow-sm rounded text-white px-4 py-2 mt-4">
+                            <div class="flex bg-emerald-500 hover:bg-emerald-600 shadow-sm rounded text-white px-4 py-2 mt-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9" /><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6" /></svg>
                             </div>
                         </router-link>
@@ -29,7 +29,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 5v14h16V7h-8.414l-2-2H4zm8.414 0H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2z"/></svg>
                                     </div>
                                     <div>{{category.name}}</div>
-                                    <div class="ml-auto text-sm px-2 py-auto border border-green-200 rounded-full bg-green-100 text-green-800">{{category.count}}</div>
+                                    <div class="ml-auto text-sm px-2 py-auto border border-emerald-200 rounded-full bg-emerald-100 text-emerald-800">{{category.count}}</div>
                                 </div>
                                 </router-link>
                                 </template>

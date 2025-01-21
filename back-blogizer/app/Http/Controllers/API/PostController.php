@@ -24,7 +24,11 @@ class PostController extends Controller
     }
 
     public function recent(Request $request){
-        // $posts = Post::with(['user','category'])->whereMonth('created_at', '<=', $request->month)->whereYear('created_at', '<=',$request->year)->withCount('like')->orderBy('id', 'desc')->simplePaginate(8);
+        // $posts = Post::with(['user','category'])->whereMonth('created_at', '<=', $request->month)->whereYear('created_at', '<=',$request->year)->withCount('like')->orderBy('id', 'desc')->simplePaginate(10);
+        $limit = 10;
+        if ($request->has('limit')) {
+            $limit = $request->limit;
+        }
         $posts = Post::with(['user','category'])->
                 when(
                     $request->has('title'), function($q)use($request){
@@ -33,8 +37,9 @@ class PostController extends Controller
                 when(
                     $request->has('created_at'), function($q)use($request){
                         $q->orderBy("created_at", $request->created_at);
-                    })
-                ->withCount('like')->orderBy('id', 'desc')->simplePaginate(10);
+                    })->
+                withCount('like')->orderBy('id', 'desc')->simplePaginate($limit);
+                
         return ListPost::collection($posts);
     }
 
@@ -47,7 +52,19 @@ class PostController extends Controller
     }
 
     public function popular(Request $request){
-        $posts = Post::withCount('like')->orderBy('like_count', 'desc')->with(['user','category'])->whereMonth('created_at', '<=',$request->month)->whereYear('created_at', '<=',$request->year)->withCount('like')->orderBy('id', 'desc')->simplePaginate(8);
+        $limit = 10;
+        if ($request->has('limit')) {
+            $limit = $request->limit;
+        }
+        $posts = Post::when(
+            $request->has('title'), function($q)use($request){
+                $q->orderBy("title", $request->title);
+            })->
+        when(
+            $request->has('created_at'), function($q)use($request){
+                $q->orderBy("created_at", $request->created_at);
+            })->
+        withCount(relations: 'like')->orderBy('like_count', 'desc')->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate($limit);
         return ListPost::collection($posts);
     }
 
@@ -56,8 +73,8 @@ class PostController extends Controller
         return HomePost::collection($posts);
     }
 
-    public function userPost(Request $request){
-        $posts = Post::where('user_id', Auth::user()->id)->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate(8);
+    public function userPost(){
+        $posts = Post::where('user_id', Auth::user()->id)->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate(10);
         return ListPost::collection($posts);
     }
 
@@ -69,7 +86,7 @@ class PostController extends Controller
     public function search(Request $request){
         $posts = Post::where('title', 'like', '%'.$request->search.'%')->orWhereHas('category', function($q)use($request){
             $q->where('name', 'like', '%'.$request->search.'%');
-        })->with(['user','category'])->whereMonth('created_at', '<=', $request->month)->whereYear('created_at', '<=',$request->year)->withCount('like')->orderBy('id', 'desc')->simplePaginate(8);
+        })->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate(10);
         return ListPost::collection($posts);
     }
 

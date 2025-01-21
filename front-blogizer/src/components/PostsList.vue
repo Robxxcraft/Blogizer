@@ -1,16 +1,18 @@
 <script setup>
 import { onClickOutside } from '@vueuse/core';
-import { reactive, ref } from '@vue/reactivity';
+import { reactive, ref, watch } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
 import api from '../axios';
+import auth from '@/store/auth';
 
-const props = defineProps(['url', 'one_grid'])
+const props = defineProps(['url', 'one_grid', 'disable_loadmore', 'limit'])
 const posts = ref([])
 const loading = ref(false)
 const sloading = ref(false)
 
 const nextLink = ref('');
 
+const sortLists = ref(['title', 'created_at', 'liked', 'commented'])
 const sortEl = ref(null)
 const isSortActive = ref(false)
 const sorts = reactive([])
@@ -56,16 +58,20 @@ const getPosts = () => {
             }
         }
     }
-    api.get(`/api/lists/posts/${props.url}?${querystring}`).then(res => {
+    api.get(`/api/lists/posts/${props.url}${props.url.includes('?') ? '' : '?' }${props.limit ? 'limit='+props.limit+'&' : ''}${querystring}`).then(res => {
         posts.value = res.data.data
         nextLink.value = res.data.links.next
         sloading.value = false
     })
 }
+watch(() => props.url, () => {
+  getPosts()
+})
 
 onMounted(()=>{
     getPosts()
 })
+
 
 const loadmore = () => {
     loading.value = true
@@ -79,15 +85,12 @@ const loadmore = () => {
         }
     }
     if (nextLink.value) {
-        api.get(`${nextLink.value}?${querystring}`).then(res => {
+        api.get(`${nextLink.value}&${querystring}`).then(res => {
             posts.value.push(...res.data.data)
             nextLink.value = res.data.links.next
             loading.value = false
         })
     }
-}
-
-const outside = (e) => {
 }
 </script>
 
@@ -104,39 +107,12 @@ const outside = (e) => {
                         <div ref="sortEl" v-if="isSortActive" class="overflow-hidden absolute bg-white top-12 right-0 w-36 max-w-xl rounded shadow-lg z-10 pt-3">
                             <div class="px-4 bg-white pb-2 text-sm font-bold text-gray-800 w-full max-w-lg">Filter by...</div>
                             <hr>
-                            <div @click="sorting('title')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
-                                <div>Title</div>
-                                <div v-if="sorts.includes('title:asc')">
+                            <div v-for="(sl) in sortLists" @click="sorting(sl)" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
+                                <div class="capitalize">{{sl.replace('_', ' ')}}</div>
+                                <div v-if="sorts.includes(sl+':asc')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
                                 </div>
-                                <div v-else-if="sorts.includes('title:desc')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
-                                </div>
-                            </div>
-                            <div @click="sorting('created_at')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
-                                <div>Created At</div>
-                                <div v-if="sorts.includes('created_at:asc')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
-                                </div>
-                                <div v-else-if="sorts.includes('created_at:desc')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
-                                </div>
-                            </div>
-                            <div @click="sorting('liked')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
-                                <div>Liked</div>
-                                <div v-if="sorts.includes('liked:asc')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
-                                </div>
-                                <div v-else-if="sorts.includes('liked:desc')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
-                                </div>
-                            </div>
-                            <div @click="sorting('commented')" class="px-4 flex items-center justify-between font-semibold text-gray-800 text-sm cursor-pointer hover:bg-emerald-500 hover:text-white pt-1 pb-1.5">
-                                <div>Commented</div>
-                                <div v-if="sorts.includes('commented:asc')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 8L18 14H6L12 8Z"></path></svg>
-                                </div>
-                                <div v-else-if="sorts.includes('commented:desc')">
+                                <div v-else-if="sorts.includes(sl+':desc')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"><path d="M12 16L6 10H18L12 16Z"></path></svg>
                                 </div>
                             </div>
@@ -149,8 +125,12 @@ const outside = (e) => {
     <div :class="`grid ${props.one_grid ? '' : 'md:grid-cols-2'} gap-4 my-4`">
         <template v-if="!sloading">
             <div v-for="(post, index) in posts" :key="index" class="flex bg-white rounded overflow-hidden shadow-sm h-36 md:h-40 lg:44">
-                <div class="overflow-hidden basis-5/12">
-                    <img :src="post.photo" class="object-cover h-full transform hover:scale-110 transition duration-500" />
+                <div class="overflow-hidden basis-5/12 relative">
+                    <div v-if="auth.state.user.username == post.username" class="absolute flex items-start z-10 right-0 mr-1 mt-1">
+                        <router-link :to=" `/posts/${post.slug}/edit`" class="shadow shadow-blue-500  rounded-full bg-white p-1 border border-blue-500 text-blue-500 font-bold focus:outline-none hover:text-white hover:bg-blue-500 mr-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M15.728 9.686l-1.414-1.414L5 17.586V19h1.414l9.314-9.314zm1.414-1.414l1.414-1.414-1.414-1.414-1.414 1.414 1.414 1.414zM7.242 21H3v-4.243L16.435 3.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 21z"/></svg></router-link>
+                        <button @click="openT(post.id)" class="shadow shadow-red-500 rounded-full bg-white p-1 border border-red-500 text-red-500 font-bold focus:outline-none hover:text-white hover:bg-red-500"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3zm1 2H6v12h12V8zm-9 3h2v6H9v-6zm4 0h2v6h-2v-6zM9 4v2h6V4H9z"/></svg></button>
+                    </div>
+                    <img :src="post.photo" class="object-cover w-full h-full transform hover:scale-110 transition duration-500" />
                 </div>
                 <div class="flex flex-col justify-between basis-7/12 p-3 tracking-wide">
                     <div class="text-gray-400 text-xs flex items-end">
@@ -158,9 +138,17 @@ const outside = (e) => {
                         <div>{{post.created_at}}</div>
                     </div>
                     <div class="flex items-center">
-                        <div class="mr-3 w-9 h-9 rounded-full overflow-hidden shadow-sm cursor-pointer">
-                            <img :src="post.userphoto" alt="Avatar" class="w-full h-full object-cover" />
-                        </div>
+                        
+                        <template v-if="post.userphoto">
+                            <div class="mr-3 w-9 h-9 rounded-full overflow-hidden shadow-sm cursor-pointer">
+                                <img :src="post.userphoto" alt="Avatar" class="w-full h-full object-cover" />
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="border rounded-full p-2 mr-3 bg-white flex justify-center items-center">
+                                <svg class="w-5 h-5 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 22h-2v-2a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v2H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+                            </div>
+                        </template>
                         <div class="flex flex-col justify-between font-bold">
                             <div class="text-xs text-gray-400">Creator</div>
                             <div class="text-sm text-gray-600 w-28 truncate">{{post.username}}</div>
@@ -210,7 +198,7 @@ const outside = (e) => {
             </div>
         </template>
     </div>
-    <div v-if="nextLink" class="flex justify-center rounded-sm font-bold tracking-wide text-base md:text-lg bg-gray-50 p-3 shadow-sm text-gray-600 hover:text-emerald-500 border-2 hover:border-emerald-500 hover:shadow-md mb-8 transition cursor-pointer" @click="loadmore()">
+    <div v-if="nextLink && !props.disable_loadmore" class="flex justify-center rounded-sm font-bold tracking-wide text-base md:text-lg bg-gray-50 p-3 shadow-sm text-gray-600 hover:text-emerald-500 border-2 hover:border-emerald-500 hover:shadow-md mb-8 transition cursor-pointer" @click="loadmore()">
         <template v-if="loading">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: 0; background: none; display: block; shape-rendering: auto;" width="24" height="24" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                 <circle cx="50" cy="50" fill="none" stroke="#52c66e" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">

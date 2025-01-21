@@ -13,7 +13,9 @@ const openNav = () => {
 }
 const auth = computed(()=> store.state.user )
 const searching = ()=>{
-    router.push({name: 'Search', query: {data: search.value}})
+    if (search.value) {
+        router.push({name: 'Search', query: {data: search.value}})
+    }
 };
 const openAD = ()=>{
     document.querySelector('.authDrop').classList.toggle('open')
@@ -53,8 +55,10 @@ const logout = () => {
                     <svg class="mr-2" version="1.0" xmlns="http://www.w3.org/2000/svg" width="28px" height="28px" viewBox="0 0 655.000000 748.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,748.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none"> <path d="M5361 6758 c-253 -381 -671 -1012 -930 -1403 -258 -390 -894 -1351 -1413 -2134 -519 -783 -946 -1429 -950 -1436 -5 -9 90 -77 310 -223 175 -116 323 -212 330 -214 6 -2 176 245 376 547 200 303 466 703 589 890 124 187 413 624 643 970 229 347 481 727 559 845 78 118 261 395 407 615 896 1353 1188 1796 1187 1803 0 5 -399 272 -620 415 l-29 19 -459 -694z"/><path d="M4057 6772 c-8 -9 -48 -69 -89 -132 -41 -63 -362 -547 -713 -1075 -351 -528 -693 -1043 -760 -1145 -67 -102 -395 -597 -730 -1100 -334 -503 -609 -920 -612 -926 -4 -11 793 -547 807 -542 7 3 181 263 1078 1616 704 1061 1070 1611 1449 2182 210 316 384 582 387 590 4 10 -19 32 -77 69 -756 500-725 480 -740 463z"/><path d="M1317 4360 c-532 -798 -967 -1452 -967 -1455 0 -3 155 -108 345 -235 l345 -230 961 1442 c529 793 964 1449 966 1458 2 10 -95 80 -313 225 -174 116 -329 218 -343 227 l-28 18 -966 -1450z"/><path d="M206 2688 c-7 -37 -99 -2659 -93 -2665 6 -5 119 43 1502 641 528 228 961 419 962 423 1 4 -51 44 -115 87 -64 44 -592 404 -1172 801 -580 396 -1060 724 -1067 728 -8 5 -14 0 -17 -15z"/></g></svg>
                     <div class="font-bold text-xl">Blogizer</div>
                 </div>
-                <div class="lg:hidden mr-2 text-white hover:text-emerald-100" @click="openNav">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <div class="mr-2">
+                    <div class="lg:hidden text-white bg-emerald-400 hover:bg-emerald-300 p-1 rounded-lg" @click="openNav">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    </div>
                 </div>
             </div>
             <div class="tabs rounded-b px-2 lg:px-0 top-10 left-0 transform lg:transform-none -translate-y-full bg-emerald-500 flex flex-col lg:flex-row justify-between w-full lg:py-1.5">
@@ -67,7 +71,7 @@ const logout = () => {
                         <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                         <div class="text-xs md:text-sm font-bold tracking-wide">Popular</div>
                     </router-link>
-                    <router-link to="/posts" class="hover:text-emerald-100 flex items-center text-white py-2 px-3 rounded-lg">
+                    <router-link to="/recent" class="hover:text-emerald-100 flex items-center text-white py-2 px-3 rounded-lg">
                         <svg class="mr-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         <div class="text-xs md:text-sm font-bold tracking-wide">Recent</div>
                     </router-link>
@@ -78,7 +82,7 @@ const logout = () => {
                 </div>
                 <div class="mx-2 lg:relative lg:flex">
                         <div class="flex">
-                            <div class="mr-8 lg:w-auto flex items-center flex-row mb-8 lg:mb-0 bg-gray-50 rounded-3xl text-gray-400 shadow-sm">
+                            <div class="cursor-pointer hover:text-emerald-500 mr-8 lg:w-auto flex items-center flex-row mb-8 lg:mb-0 bg-gray-50 rounded-3xl text-gray-400 shadow-sm">
                                 <svg @click="searching" class="mx-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="arcs"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                                 <input type="text" v-model="search" class="w-full shadow-sm px-2 py-2 bg-transparent focus:outline-none text-sm" placeholder="Search" @keyup.enter="searching">
                             </div>
@@ -94,7 +98,7 @@ const logout = () => {
                         </div>
                         <template v-if="auth">
                             <div class="select-none">
-                                <div class="hidden md:block ml-4 lg:ml-2 w-9 h-9 rounded-full overflow-hidden shadow-sm cursor-pointer" @click="openAD">
+                                <div class="hidden lg:block ml-4 lg:ml-2 w-9 h-9 rounded-full overflow-hidden shadow-sm cursor-pointer" @click="openAD">
                                     <template v-if="auth.photo">
                                         <img :src="auth.photo" alt="Avatar" class="w-full h-full object-cover" />
                                     </template>

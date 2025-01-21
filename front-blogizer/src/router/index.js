@@ -40,16 +40,16 @@ const router = createRouter({
     {
       path: "/categories/:slug",
       name: "PostsCategory",
-      component: () => import("../views/PostsCategory.vue"),
+      component: () => import("../views/CategoryPosts.vue"),
     },
     {
       path: "/popular",
       component: () => import("../views/Popular.vue"),
     },
     {
-      path: "/posts",
+      path: "/recent",
       name: "Recent",
-      component: () => import("../views/ListPosts.vue"),
+      component: () => import("../views/Recent.vue"),
       props: true,
     },
     {
@@ -74,7 +74,7 @@ const router = createRouter({
     },
     {
       path: "/posts/:slug",
-      component: () => import("../views/DetailsPost.vue"),
+      component: () => import("../views/Details.vue"),
     },
     {
       path: "/posts/add",

@@ -96,10 +96,10 @@ Route::get('/lists/posts/postscategory/{slug}', [CategoryController::class, 'cat
 Route::get('/lists/posts/recent', [PostController::class, 'recent']);
 Route::get('/lists/posts/popular', [PostController::class, 'popular']);
 Route::get('/lists/posts/search/{slug}', [PostController::class, 'search']);
+Route::get('/lists/posts/tag/{slug}', [TagController::class, 'tagPosts']);
 
 Route::get('/posts/related/{slug}', [PostController::class, 'related']);
 Route::get('/posts/{slug}/edit', [PostController::class, 'edit']);
 Route::get('/posts/{slug}/details', [PostController::class, 'details']);
-Route::get('/posts/tag/{slug}', [TagController::class, 'tagPosts']);
 
 Route::get('/setting/banner', [SettingController::class, 'index']);

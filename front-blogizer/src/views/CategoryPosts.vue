@@ -11,7 +11,7 @@
                         <div class="flex justify-between mb-4">
                         <div>
                             <div class="font-bold text-base md:text-xl text-gray-700 mb-2 tracking-wide">
-                                Posts Category
+                                Category Posts
                             </div>
                             <div class="bg-emerald-500 rounded-sm w-30 md:w-36 h-1"></div>
                         </div>

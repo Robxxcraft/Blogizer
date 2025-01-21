@@ -29,7 +29,7 @@ class TagController extends Controller
     {
         $posts = Post::whereHas('tag', function($q)use($slug){
             $q->where('slug', $slug);
-        })->with(['user','category'])->whereMonth('created_at', '<=', $request->month)->whereYear('created_at', '<=', $request->year)->withCount('like')->orderBy('id', 'desc')->simplePaginate(8);
+        })->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate(10);
         return ListPost::collection($posts);
     }
 

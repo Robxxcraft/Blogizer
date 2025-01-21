@@ -131,7 +131,7 @@ const deleteComment = (id)=>{
                             </div>
                             <div class="flex flex-col">
                                 <template v-if="post.username">
-                                    <div class="font-bold text-gray-800 text-sm">By</div>
+                                    <div class="font-bold text-gray-800 text-sm">Creator</div>
                                     <div class="text-gray-700">{{post.username}}</div>
                                 </template>
                                 <template v-else>

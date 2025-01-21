@@ -108,11 +108,11 @@ onMounted(() => {
                     </div>
                 </template>
                 <div class="mt-8">
-                    <PostsList :one_grid="true" url="recent">
+                    <PostsList :one_grid="true" :disable_loadmore="true" :limit="5" url="recent">
                         <template v-slot:title>
                             <div>
-                                <div class="font-bold text-base md:text-xl text-gray-700 mb-2 tracking-wide">Recent Posts</div>
-                                <div class="bg-emerald-500 rounded-sm w-30 md:w-36 h-1"></div>
+                                <div class="font-bold text-base md:text-xl text-gray-700 mb-2 pr-2 tracking-wide">Recent Posts</div>
+                                <div class="bg-emerald-500 rounded-sm h-1"></div>
                             </div>
                         </template>
                     </PostsList>

@@ -1,3 +1,41 @@
+
+<script setup>
+import Navigation from "../components/navigation.vue";
+import Footers from "../components/footer.vue";
+import PostsList from "../components/PostsList.vue";
+import { ref } from '@vue/reactivity';
+import api from '../axios';
+import { onMounted } from '@vue/runtime-core';
+
+const props = defineProps(['alert_title', 'alert_subtitle'])
+const categories = ref([])
+const tags = ref([])
+const categorySloading = ref(false)
+function openToast() {
+    document.querySelector('.toast').classList.toggle('translate-x-80')
+}
+
+function activeToast(){
+    openToast()
+    document.querySelector('#title').textContent = props.alert_title
+    document.querySelector('#subtitle').textContent = props.alert_subtitle
+    setTimeout(openToast, 3000)
+}
+onMounted(() => {
+    if (props.alert_title) {
+        setTimeout(activeToast, 500)
+    }
+    api.get('/api/home/tags').then(res => {
+        tags.value = res.data.data
+    })
+    categorySloading.value = true
+    api.get('/api/home/categories').then(res => {
+        categories.value = res.data.data
+        categorySloading.value = false
+    })
+})
+</script>
+
 <template>
     <div class="overflow-hidden">
         <Navigation />
@@ -75,50 +113,3 @@
         <Footers />
     </div>
 </template>
-
-<script>
-import Navigation from "../components/navigation.vue";
-import Footers from "../components/footer.vue";
-import PostsList from "../components/PostsList.vue";
-import { ref } from '@vue/reactivity';
-import api from '../axios';
-import { onMounted } from '@vue/runtime-core';
-export default {
-    components: {
-        Navigation,
-        Footers,
-        PostsList
-    },
-    props: ['alert_title', 'alert_subtitle'],
-    setup(props) {
-        const categories = ref([])
-        const tags = ref([])
-        const categorySloading = ref(false)
-        function openTst() {
-            document.querySelector('.toast').classList.toggle('translate-x-80')
-        }
-
-        function activeToast(){
-            openTst()
-            document.querySelector('#title').textContent = props.alert_title
-            document.querySelector('#subtitle').textContent = props.alert_subtitle
-            setTimeout(openTst, 3000)
-        }
-        onMounted(() => {
-            if (props.alert_title) {
-                setTimeout(activeToast, 500)
-            }
-            api.get('/api/home/tags').then(res => {
-                tags.value = res.data.data
-            })
-            categorySloading.value = true
-            api.get('/api/home/categories').then(res => {
-                categories.value = res.data.data
-                categorySloading.value = false
-            })
-        })
-
-        return { categories, tags, categorySloading}
-    },
-}
-</script>
