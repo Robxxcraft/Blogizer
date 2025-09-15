@@ -75,8 +75,14 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('/lists/posts/user', [PostController::class, 'userPost']);
     Route::get('/user/posts/popular', [PostController::class, 'userPopular']);
 
-    Route::post('/post/{id}/comment', [CommentController::class, 'create']);
-    Route::delete('/post/{id}/comment', [CommentController::class, 'delete']);
+    Route::post('/comment/{id}', [CommentController::class, 'create']);
+    Route::delete('/comment/{id}', [CommentController::class, 'delete']);
+
+    Route::post('/reply/{id}', [CommentRepliesController::class, 'create']);
+    Route::delete('/reply/{id}', [CommentRepliesController::class, 'delete']);
+
+    Route::post('/posts/{id}/comment/like', [CommentLikes::class, 'like']);
+    Route::post('/posts/{id}/comment/unlike', [CommentLikes::class, 'unlike']);
 
     Route::post('/posts/{id}/like', [LikeController::class, 'like']);
     Route::post('/posts/{id}/unlike', [LikeController::class, 'unlike']);

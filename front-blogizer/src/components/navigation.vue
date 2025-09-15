@@ -18,7 +18,7 @@ const searching = ()=>{
     }
 };
 const openAD = ()=>{
-    document.querySelector('.authDrop').classList.toggle('open')
+    document.querySelector('#auth-dropdown').classList.toggle('open')
 }
 const openToast = ()=>{
     const tabs =  document.querySelector('.-translate-y-full')
@@ -137,7 +137,7 @@ const logout = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="authDrop hidden absolute min-w-32 lg:top-12 right-0 bg-white shadow-sm border border-gray-300 rounded p-4">
+                                <div id="auth-dropdown" class="hidden absolute min-w-32 lg:top-12 right-0 bg-white shadow-sm border border-gray-300 rounded p-4">
                                     <div class="flex items-center text-gray-700 border-b-2 pb-4 mb-4">
                                         <svg class="w-9 h-9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 22h-2v-2a3 3 0 0 0-3-3H9a3 3 0 0 0-3 3v2H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
                                         <div class="w-full ml-2 font-bold">
