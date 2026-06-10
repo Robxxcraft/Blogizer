@@ -1,7 +1,7 @@
 <script setup>
 import Navigation from "../components/navigation.vue";
 import Footers from "../components/footer.vue";
-import { onMounted, ref, watch } from '@vue/runtime-core';
+import { onMounted, ref, watch, computed } from '@vue/runtime-core';
 import api from '../axios';
 import { useRoute, useRouter } from 'vue-router';
 import store from "../store/auth";
@@ -11,10 +11,10 @@ const relatedPost = ref([])
 const tags = ref([])
 const comment = ref('')
 const errors = ref({})
-const user = ref({})
 const loading = ref(false)
 const router = useRouter()
 const route = useRoute()
+const user = computed(() => store.state.user)
 
 watch(route,()=>{
     api.get(`/api/posts/${route.params.slug}/details`).then(res => {
@@ -32,7 +32,6 @@ onMounted(() => {
     api.get('/api/home/tags').then(res => {
         tags.value = res.data.data
     })
-    user.value = store.state.user ? store.state.user : ''
 })
 const back = ()=>{
     router.go(-1)
@@ -62,7 +61,7 @@ const like = (id) => {
 }
 const addComment = (id)=>{
     loading.value = true
-    api.post(`/api/post/${id}/comment`, {body: comment.value}).then(res =>{
+    api.post(`/api/comment/${id}`, {body: comment.value}).then(res =>{
         post.value.comments.push({id: res.data, username: user.value.username, user_id: user.value.id, body: comment.value, created_at: 'Just now'})
         comment.value = ''
         loading.value = false

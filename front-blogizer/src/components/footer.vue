@@ -87,7 +87,7 @@
     </div>
     
     <div class="flex justify-center border-t py-2">
-      <div><span class="text-green-600 font-bold mr-2">Vue JS 3 </span> <span class="font-bold text-gray-400">and</span> <span class="ml-2 text-blue-400 font-bold">TailwindCSS 2</span></div>
+      <div><span class="text-teal-500 font-bold mr-2">Vue JS 3 </span> <span class="font-bold text-gray-400">and</span> <span class="ml-2 text-blue-400 font-bold">TailwindCSS 3</span></div>
     </div>
   </footer>
 </template>

@@ -45,7 +45,7 @@ class PostController extends Controller
 
     public function related($slug){
         $postSlug = Post::where('slug', $slug)->with('category')->first()->category->slug;
-        $posts = Post::whereNot('id',$postSlug->id)->whereHas('category', function($q)use($postSlug){
+        $posts = Post::whereHas('category', function($q)use($postSlug){
             $q->where('slug', $postSlug);
         })->with(['user','category'])->orderBy('id', 'desc')->take(5)->get();
         return HomePost::collection($posts);
@@ -64,7 +64,7 @@ class PostController extends Controller
             $request->has('created_at'), function($q)use($request){
                 $q->orderBy("created_at", $request->created_at);
             })->
-        withCount(relations: 'like')->orderBy('like_count', 'desc')->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate($limit);
+        withCount('like')->orderBy('like_count', 'desc')->with(['user','category'])->withCount('like')->orderBy('id', 'desc')->simplePaginate($limit);
         return ListPost::collection($posts);
     }
 

@@ -11,9 +11,11 @@ use App\Http\Controllers\API\LikeController;
 use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\TagController;
 use App\Http\Controllers\API\ChartController;
+// use App\Http\Controllers\API\CommentRepliesController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Middleware\isAdmin;
 use App\Http\Resources\UserResource;
+// use App\Models\CommentLikes;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,11 +80,11 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/comment/{id}', [CommentController::class, 'create']);
     Route::delete('/comment/{id}', [CommentController::class, 'delete']);
 
-    Route::post('/reply/{id}', [CommentRepliesController::class, 'create']);
-    Route::delete('/reply/{id}', [CommentRepliesController::class, 'delete']);
+    // Route::post('/reply/{id}', [CommentRepliesController::class, 'create']);
+    // Route::delete('/reply/{id}', [CommentRepliesController::class, 'delete']);
 
-    Route::post('/posts/{id}/comment/like', [CommentLikes::class, 'like']);
-    Route::post('/posts/{id}/comment/unlike', [CommentLikes::class, 'unlike']);
+    // Route::post('/posts/{id}/comment/like', [CommentLikes::class, 'like']);
+    // Route::post('/posts/{id}/comment/unlike', [CommentLikes::class, 'unlike']);
 
     Route::post('/posts/{id}/like', [LikeController::class, 'like']);
     Route::post('/posts/{id}/unlike', [LikeController::class, 'unlike']);
@@ -91,6 +93,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/profile/update', [AuthController::class, 'update']);
 });
 
+// public api
 Route::get('/all/categories', [CategoryController::class, 'categoriesAll']);
 Route::get('/lists/categories', [CategoryController::class, 'categoriesLists']);
 
