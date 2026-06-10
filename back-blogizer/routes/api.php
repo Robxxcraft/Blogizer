@@ -93,7 +93,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/profile/update', [AuthController::class, 'update']);
 });
 
-// public api
 Route::get('/all/categories', [CategoryController::class, 'categoriesAll']);
 Route::get('/lists/categories', [CategoryController::class, 'categoriesLists']);
 
